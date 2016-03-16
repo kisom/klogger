@@ -40,11 +40,11 @@ public:
 	~ConsoleLogger(void) {};
 
 	// debug writes a log message with the DEBUG level.
-	void debug(const std::string actor,
-	    const std::string event,
+	void debug(const std::string& actor,
+	    const std::string& event,
 	    std::map<std::string, std::string> attrs);
-	void debug(const std::string actor,
-	    const std::string event);
+	void debug(const std::string& actor,
+	    const std::string& event);
 
 	// info writes a log message with the INFO level.
 	void info(const std::string& actor,
@@ -54,52 +54,52 @@ public:
 		  const std::string& event);
 
 	// warn writes a log message with the WARN level.
-	void warn(const std::string actor,
-	    const std::string event,
+	void warn(const std::string& actor,
+	    const std::string& event,
 	    std::map<std::string, std::string> attrs);
-	void warn(const std::string actor,
-	    const std::string event);
+	void warn(const std::string& actor,
+	    const std::string& event);
 
 	// error writes a log message with the ERROR level.
-	void error(const std::string actor,
-	    const std::string event,
+	void error(const std::string& actor,
+	    const std::string& event,
 	    std::map<std::string, std::string> attrs);
-	void error(const std::string actor,
-	    const std::string event);
+	void error(const std::string& actor,
+	    const std::string& event);
 
 	// critical writes a log message with the CRITICAL level.
-	void critical(const std::string actor,
-	    const std::string event,
+	void critical(const std::string& actor,
+	    const std::string& event,
 	    std::map<std::string, std::string> attrs);
-	void critical(const std::string actor,
-	    const std::string event);
+	void critical(const std::string& actor,
+	    const std::string& event);
 
 	// fatal writes a log message with the FATAL level. The process
 	// will exit with exit code EXIT_FAILURE.
-	void fatal(const std::string actor,
-	    const std::string event,
+	void fatal(const std::string& actor,
+	    const std::string& event,
 	    std::map<std::string, std::string> attrs);
-	void fatal(const std::string actor,
-	    const std::string event);
+	void fatal(const std::string& actor,
+	    const std::string& event);
 
 	// fatal writes a log message with the FATAL level. The process
 	// will exit with exitcode.
 	void fatal(int exitcode,
-	    const std::string actor,
-	    const std::string event,
+	    const std::string& actor,
+	    const std::string& event,
 	    std::map<std::string, std::string> attrs);
 	void fatal(int exitcode,
-	    const std::string actor,
-	    const std::string event);
+	    const std::string& actor,
+	    const std::string& event);
    
 	// fatal_noexit writes a log message with the FATAL level but
 	// does not exit; the caller is expected to handle exiting the
 	// process after any cleanup.
-	void fatal_noexit(const std::string actor,
-	    const std::string event,
+	void fatal_noexit(const std::string& actor,
+	    const std::string& event,
 	    std::map<std::string, std::string> attrs);
-	void fatal_noexit(const std::string actor,
-	    const std::string event);
+	void fatal_noexit(const std::string& actor,
+	    const std::string& event);
    
 	// level sets the minimum logging level.
 	void            level(Level);

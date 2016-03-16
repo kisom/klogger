@@ -115,62 +115,62 @@ public:
 
 	// debug writes a log message with the DEBUG level.
 	virtual
-	void debug(const std::string actor,
-		   const std::string event,
+	void debug(const std::string& actor,
+		   const std::string& event,
 		   std::map<std::string, std::string> attrs) = 0;
 	virtual
-	void debug(const std::string actor,
-		   const std::string event) = 0;
+	void debug(const std::string& actor,
+		   const std::string& event) = 0;
 
 	// info writes a log message with the INFO level.
 	virtual
 	void info(const std::string& actor,
-	    const std::string& event,
-	    std::map<std::string, std::string> attrs) = 0;
+		  const std::string& event,
+		  std::map<std::string, std::string> attrs) = 0;
 	virtual
 	void info(const std::string& actor,
 		  const std::string& event) = 0;
 
 	// warn writes a log message with the WARN level.
 	virtual
-	void warn(const std::string actor,
-	    const std::string event,
-	    std::map<std::string, std::string> attrs) = 0;
+	void warn(const std::string& actor,
+		  const std::string& event,
+		  std::map<std::string, std::string> attrs) = 0;
 
 	// error writes a log message with the ERROR level.
 	virtual
-	void error(const std::string actor,
-	    const std::string event,
-	    std::map<std::string, std::string> attrs) = 0;
+	void error(const std::string& actor,
+		   const std::string& event,
+		   std::map<std::string, std::string> attrs) = 0;
 
 	// critical writes a log message with the CRITICAL level.
 	virtual
-	void critical(const std::string actor,
-	    const std::string event,
-	    std::map<std::string, std::string> attrs) = 0;
+	void critical(const std::string& actor,
+		      const std::string& event,
+		      std::map<std::string, std::string> attrs) = 0;
 
 	// fatal writes a log message with the FATAL level. The process
 	// will exit with exit code EXIT_FAILURE.
 	virtual
-	void fatal(const std::string actor,
-	    const std::string event,
-	    std::map<std::string, std::string> attrs) = 0;
+	void fatal(const std::string& actor,
+		   const std::string& event,
+		   std::map<std::string, std::string> attrs) = 0;
 
 	// fatal writes a log message with the FATAL level. The process
 	// will exit with exitcode.
 	virtual
 	void fatal(int exitcode,
-	    const std::string actor,
-	    const std::string event,
-	    std::map<std::string, std::string> attrs) = 0;
+		   const std::string& actor,
+		   const std::string& event,
+		   std::map<std::string, std::string> attrs) = 0;
    
 	// fatal_noexit writes a log message with the FATAL level but
 	// does not exit; the caller is expected to handle exiting the
 	// process after any cleanup.
 	virtual
-	void fatal_noexit(const std::string actor,
-	    const std::string event,
-	    std::map<std::string, std::string> attrs) = 0;
+	void fatal_noexit(const std::string& actor,
+			  const std::string& event,
+			  std::map<std::string, std::string> attrs) = 0;
    
 	// level sets the minimum logging level.
 	virtual

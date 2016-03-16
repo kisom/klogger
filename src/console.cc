@@ -33,8 +33,8 @@ namespace klog {
 
 
 void
-ConsoleLogger::debug(const std::string actor,
-		     const std::string event,
+ConsoleLogger::debug(const std::string& actor,
+		     const std::string& event,
 		     std::map<std::string, std::string> attrs)
 {
 	if (this->ilevel > Level::DEBUG) {
@@ -45,8 +45,8 @@ ConsoleLogger::debug(const std::string actor,
 
 
 void
-ConsoleLogger::debug(const std::string actor,
-		     const std::string event)
+ConsoleLogger::debug(const std::string& actor,
+		     const std::string& event)
 {
 	if (this->ilevel > Level::DEBUG) {
 		return;
@@ -79,8 +79,8 @@ ConsoleLogger::info(const std::string& actor,
 
 
 void
-ConsoleLogger::warn(const std::string actor,
-		    const std::string event,
+ConsoleLogger::warn(const std::string& actor,
+		    const std::string& event,
 		    std::map<std::string, std::string> attrs)
 {
 	if (this->ilevel > Level::WARN) {
@@ -91,8 +91,8 @@ ConsoleLogger::warn(const std::string actor,
 
 
 void
-ConsoleLogger::warn(const std::string actor,
-		    const std::string event)
+ConsoleLogger::warn(const std::string& actor,
+		    const std::string& event)
 {
 	if (this->ilevel > Level::WARN) {
 		return;
@@ -102,8 +102,8 @@ ConsoleLogger::warn(const std::string actor,
 
 
 void
-ConsoleLogger::error(const std::string actor,
-		     const std::string event,
+ConsoleLogger::error(const std::string& actor,
+		     const std::string& event,
 		     std::map<std::string, std::string> attrs)
 {
 	if (this->ilevel > Level::ERROR) {
@@ -114,8 +114,8 @@ ConsoleLogger::error(const std::string actor,
 
 
 void
-ConsoleLogger::error(const std::string actor,
-		     const std::string event)
+ConsoleLogger::error(const std::string& actor,
+		     const std::string& event)
 {
 	if (this->ilevel > Level::ERROR) {
 		return;
@@ -125,8 +125,8 @@ ConsoleLogger::error(const std::string actor,
 
 
 void
-ConsoleLogger::critical(const std::string actor,
-			const std::string event,
+ConsoleLogger::critical(const std::string& actor,
+			const std::string& event,
 			std::map<std::string, std::string> attrs) 
 {
 	if (this->ilevel > Level::CRITICAL) {
@@ -137,8 +137,8 @@ ConsoleLogger::critical(const std::string actor,
 
 
 void
-ConsoleLogger::critical(const std::string actor,
-			const std::string event)
+ConsoleLogger::critical(const std::string& actor,
+			const std::string& event)
 {
 	if (this->ilevel > Level::CRITICAL) {
 		return;
@@ -148,8 +148,8 @@ ConsoleLogger::critical(const std::string actor,
 
 
 void
-ConsoleLogger::fatal(const std::string actor,
-		     const std::string event,
+ConsoleLogger::fatal(const std::string& actor,
+		     const std::string& event,
 		     std::map<std::string, std::string> attrs)
 {
 	if (this->ilevel > Level::FATAL) {
@@ -161,8 +161,8 @@ ConsoleLogger::fatal(const std::string actor,
 
 
 void
-ConsoleLogger::fatal(const std::string actor,
-    const std::string event)
+ConsoleLogger::fatal(const std::string& actor,
+    const std::string& event)
 {
 	if (this->ilevel > Level::FATAL) {
 		return;
@@ -173,8 +173,8 @@ ConsoleLogger::fatal(const std::string actor,
 
 void
 ConsoleLogger::fatal(int exitcode,
-		     const std::string actor,
-		     const std::string event,
+		     const std::string& actor,
+		     const std::string& event,
 		     std::map<std::string, std::string> attrs)
 {
 	if (this->ilevel > Level::FATAL) {
@@ -187,8 +187,8 @@ ConsoleLogger::fatal(int exitcode,
 
 void
 ConsoleLogger::fatal(int exitcode,
-		     const std::string actor,
-		     const std::string event)
+		     const std::string& actor,
+		     const std::string& event)
 {
 	if (this->ilevel > Level::FATAL) {
 		return;
@@ -199,8 +199,8 @@ ConsoleLogger::fatal(int exitcode,
 
 
 void
-ConsoleLogger::fatal_noexit(const std::string actor,
-			    const std::string event,
+ConsoleLogger::fatal_noexit(const std::string& actor,
+			    const std::string& event,
 			    std::map<std::string, std::string> attrs)
 {
 	if (this->ilevel > Level::FATAL) {
@@ -210,8 +210,8 @@ ConsoleLogger::fatal_noexit(const std::string actor,
 }
 
 void
-ConsoleLogger::fatal_noexit(const std::string actor,
-			    const std::string event)
+ConsoleLogger::fatal_noexit(const std::string& actor,
+			    const std::string& event)
 {
 	if (this->ilevel > Level::FATAL) {
 		return;
