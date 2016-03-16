@@ -39,6 +39,8 @@ main(int argc, char *argv[])
 		::abort();
 	}
 
+	console.debug("main", "starts");
+
 	for (int i = 1; i < argc; i++) {
 		auto	k = "argv[" + std::to_string(i) + "]";
 		args[k] = std::string(argv[i]);
