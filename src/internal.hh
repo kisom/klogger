@@ -31,9 +31,20 @@
 #include <klogger/logger.hh>
 
 
+// Determine whether to write the log message based on the current
+// level. l is the logger's current minimum logging level, and c is the
+// log level for the current method. For example,
+//   void
+//   Logger::info(std::string actor, std::string event)
+//   {
+//           LEVEL_CHECK(this->ilevel, Level::DEBUG);
+//           // do the actual logging
+//   }
+#define LEVEL_CHECK(l, c) if ((l) > (c)) { return; }
+
 namespace klog {
 
-constexpr auto	date_format = "%FT%R+z";
+constexpr auto	date_format = "%FT%T%z";
 
 static std::map<Level, std::string> level_strings = {
 	{Level::DEBUG,    "DEBUG"},
@@ -45,12 +56,33 @@ static std::map<Level, std::string> level_strings = {
 };
 
 std::string	timestamp(void);
+
+// Standard functions for writing out log messages and building
+// strings. The _nt variants do not log timestamps, expecting that
+// the logging backend is also adding timestamps.
 std::ostream&	write_log(std::ostream& outs, 
 			  Level level,
 			  std::string actor,
 			  std::string event,
 			  std::map<std::string, std::string> attrs);
-}
+std::string	log_to_string(Level level,
+			      std::string actor,
+			      std::string event,
+			      std::map<std::string, std::string> attrs);
+std::string	log_to_string(std::string actor,
+			      std::string event,
+			      std::map<std::string, std::string> attrs);
+std::ostream&	write_log_nt(std::ostream& outs, 
+			     Level level,
+			     std::string actor,
+			     std::string event,
+			     std::map<std::string, std::string> attrs);
+std::string	log_to_string_nt(Level level,
+			         std::string actor,
+				 std::string event,
+				 std::map<std::string, std::string> attrs);
+
+} // namespace klog
 
 
 #endif // #ifndef __KLOGGER_INTERNAL_HH__

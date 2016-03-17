@@ -85,6 +85,9 @@ enum class LogError {
 	// The logger is currently healthy.
 	HEALTHY,
 
+	// The logger has been closed.
+	ERR_CLOSED,
+
 	// The logger couldn't be opened: maybe the TTY is unavailable for
 	// writing, or a log file couldn't be opened.
 	ERR_OPEN,
@@ -99,6 +102,9 @@ enum class LogError {
 	// unavailable. There might be a network failure, or a file stream
 	// might have been closed.
 	ERR_UNAVAILABLE,
+
+	// The logger couldn't close itself.
+	ERR_CLOSEFAIL,
    
 	// If the error doesn't meet one of the above categories, let the user
 	// know that we didn't think about this condition.  Normally, I'd
@@ -136,18 +142,27 @@ public:
 	void warn(const std::string& actor,
 		  const std::string& event,
 		  std::map<std::string, std::string> attrs) = 0;
+	virtual
+	void warn(const std::string& actor,
+		  const std::string& event) = 0;
 
 	// error writes a log message with the ERROR level.
 	virtual
 	void error(const std::string& actor,
 		   const std::string& event,
 		   std::map<std::string, std::string> attrs) = 0;
+	virtual
+	void error(const std::string& actor,
+		   const std::string& event) = 0;
 
 	// critical writes a log message with the CRITICAL level.
 	virtual
 	void critical(const std::string& actor,
 		      const std::string& event,
 		      std::map<std::string, std::string> attrs) = 0;
+	virtual
+	void critical(const std::string& actor,
+		      const std::string& event) = 0;
 
 	// fatal writes a log message with the FATAL level. The process
 	// will exit with exit code EXIT_FAILURE.
@@ -155,6 +170,9 @@ public:
 	void fatal(const std::string& actor,
 		   const std::string& event,
 		   std::map<std::string, std::string> attrs) = 0;
+	virtual
+	void fatal(const std::string& actor,
+		   const std::string& event) = 0;
 
 	// fatal writes a log message with the FATAL level. The process
 	// will exit with exitcode.
@@ -163,6 +181,10 @@ public:
 		   const std::string& actor,
 		   const std::string& event,
 		   std::map<std::string, std::string> attrs) = 0;
+	virtual
+	void fatal(int exitcode,
+		   const std::string& actor,
+		   const std::string& event) = 0;
    
 	// fatal_noexit writes a log message with the FATAL level but
 	// does not exit; the caller is expected to handle exiting the
@@ -171,6 +193,9 @@ public:
 	void fatal_noexit(const std::string& actor,
 			  const std::string& event,
 			  std::map<std::string, std::string> attrs) = 0;
+	virtual
+	void fatal_noexit(const std::string& actor,
+			  const std::string& event) = 0;
    
 	// level sets the minimum logging level.
 	virtual
@@ -184,6 +209,10 @@ public:
 	virtual
 	LogError        error(void) = 0;
 	  
+	// close provides a mechanism for shutting down a logger. Generally,
+	// a closed logger should return ERR_CLOSED once it is closed.
+	virtual
+	int		close(void) = 0;
 };
 
 

@@ -20,6 +20,7 @@ test-suite.log
 
 # noinst / test programs
 src/console_test
+src/syslog_test
 
 # compiled output
 src/libklogger.a

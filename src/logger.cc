@@ -35,6 +35,7 @@ namespace klog {
 
 
 constexpr size_t	TIMESTAMP_BUF_SIZE = 32;
+constexpr size_t	TIMESTAMP_SIZE = 24;
 
 
 std::string
@@ -45,7 +46,8 @@ timestamp()
 	std::stringstream	ss;
 	char			buf[TIMESTAMP_BUF_SIZE];
 
-	if (0 != std::strftime(buf, TIMESTAMP_BUF_SIZE, date_format, (const std::tm *)&tm)) {
+	if (TIMESTAMP_SIZE != std::strftime(buf, TIMESTAMP_BUF_SIZE,
+		    date_format, (const std::tm *)&tm)) {
 		return std::to_string(t);
 	}
 	else {
@@ -53,20 +55,6 @@ timestamp()
 		return ss.str();
 	}
 }
-
-
-/*
- * N.B.: put_time doesn't seem to be widely available.
-std::ostream&
-timestamp(std::ostream& outs)
-{
-	std::time_t		t = std::time(nullptr);
-        std::tm			tm = *std::localtime(&t);
-
-	outs << std::put_time(&tm, date_format);
-	return outs;
-}
- */
 
 
 std::ostream&
@@ -87,6 +75,68 @@ write_log(std::ostream& outs,
 
 	outs << std::endl;
 	return outs;
+}
+
+
+std::ostream&
+write_log_nt(std::ostream& outs, 
+	     Level level,
+	     std::string actor,
+	     std::string event,
+	     std::map<std::string, std::string> attrs)
+{
+	outs << "[" << level_strings[level] << "] ";
+	outs << "[" << "actor:" << actor << " event:" << event << "]";
+
+	for (auto it = attrs.begin(); it != attrs.end(); it++) {
+		outs << " " << it->first << "=" << it->second;
+	}
+
+	outs << std::endl;
+	return outs;
+}
+
+
+std::string
+log_to_string(Level level,
+	      std::string actor,
+	      std::string event,
+	      std::map<std::string, std::string> attrs)
+{
+	std::stringstream	ss;
+
+	write_log(ss, level, actor, event, attrs);
+	return ss.str();
+}
+
+
+std::string
+log_to_string_nt(Level level,
+		 std::string actor,
+		 std::string event,
+		 std::map<std::string, std::string> attrs)
+{
+	std::stringstream	ss;
+
+	write_log_nt(ss, level, actor, event, attrs);
+	return ss.str();
+}
+
+
+std::string
+log_to_string(std::string actor,
+	      std::string event,
+	      std::map<std::string, std::string> attrs)
+{
+	std::stringstream	ss;
+
+	ss << "[" << "actor:" << actor << " event:" << event << "]";
+
+	for (auto it = attrs.begin(); it != attrs.end(); it++) {
+		ss << " " << it->first << "=" << it->second;
+	}
+
+	return ss.str();
 }
 
 

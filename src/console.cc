@@ -23,6 +23,7 @@
 
 #include <iostream>
 #include <map>
+#include <unistd.h>
 
 #include <klogger/logger.hh>
 #include <klogger/console.hh>
@@ -37,9 +38,7 @@ ConsoleLogger::debug(const std::string& actor,
 		     const std::string& event,
 		     std::map<std::string, std::string> attrs)
 {
-	if (this->ilevel > Level::DEBUG) {
-		return;
-	}
+	LEVEL_CHECK(this->ilevel, Level::DEBUG);
 	write_log(std::cout, Level::DEBUG, actor, event, attrs);
 }
 
@@ -48,9 +47,7 @@ void
 ConsoleLogger::debug(const std::string& actor,
 		     const std::string& event)
 {
-	if (this->ilevel > Level::DEBUG) {
-		return;
-	}
+	LEVEL_CHECK(this->ilevel, Level::DEBUG);
 	write_log(std::cout, Level::DEBUG, actor, event, {});
 }
 
@@ -60,9 +57,7 @@ ConsoleLogger::info(const std::string& actor,
 		    const std::string& event,
 		    std::map<std::string, std::string> attrs)
 {
-	if (this->ilevel > Level::INFO) {
-		return;
-	}
+	LEVEL_CHECK(this->ilevel, Level::INFO);
 	write_log(std::cout, Level::INFO, actor, event, attrs);
 }
 
@@ -71,9 +66,7 @@ void
 ConsoleLogger::info(const std::string& actor,
 		    const std::string& event)
 {
-	if (this->ilevel > Level::INFO) {
-		return;
-	}
+	LEVEL_CHECK(this->ilevel, Level::INFO);
 	write_log(std::cout, Level::INFO, actor, event, {});
 }
 
@@ -83,9 +76,7 @@ ConsoleLogger::warn(const std::string& actor,
 		    const std::string& event,
 		    std::map<std::string, std::string> attrs)
 {
-	if (this->ilevel > Level::WARN) {
-		return;
-	}
+	LEVEL_CHECK(this->ilevel, Level::WARN);
 	write_log(std::cerr, Level::WARN, actor, event, attrs);
 }
 
@@ -94,9 +85,7 @@ void
 ConsoleLogger::warn(const std::string& actor,
 		    const std::string& event)
 {
-	if (this->ilevel > Level::WARN) {
-		return;
-	}
+	LEVEL_CHECK(this->ilevel, Level::WARN);
 	write_log(std::cerr, Level::WARN, actor, event, {});
 }
 
@@ -106,9 +95,7 @@ ConsoleLogger::error(const std::string& actor,
 		     const std::string& event,
 		     std::map<std::string, std::string> attrs)
 {
-	if (this->ilevel > Level::ERROR) {
-		return;
-	}
+	LEVEL_CHECK(this->ilevel, Level::ERROR);
 	write_log(std::cerr, Level::ERROR, actor, event, attrs);
 }
 
@@ -117,9 +104,7 @@ void
 ConsoleLogger::error(const std::string& actor,
 		     const std::string& event)
 {
-	if (this->ilevel > Level::ERROR) {
-		return;
-	}
+	LEVEL_CHECK(this->ilevel, Level::ERROR);
 	write_log(std::cerr, Level::ERROR, actor, event, {});
 }
 
@@ -129,9 +114,7 @@ ConsoleLogger::critical(const std::string& actor,
 			const std::string& event,
 			std::map<std::string, std::string> attrs) 
 {
-	if (this->ilevel > Level::CRITICAL) {
-		return;
-	}
+	LEVEL_CHECK(this->ilevel, Level::CRITICAL);
 	write_log(std::cerr, Level::CRITICAL, actor, event, attrs);
 }
 
@@ -140,9 +123,7 @@ void
 ConsoleLogger::critical(const std::string& actor,
 			const std::string& event)
 {
-	if (this->ilevel > Level::CRITICAL) {
-		return;
-	}
+	LEVEL_CHECK(this->ilevel, Level::CRITICAL);
 	write_log(std::cerr, Level::CRITICAL, actor, event, {});
 }
 
@@ -152,9 +133,7 @@ ConsoleLogger::fatal(const std::string& actor,
 		     const std::string& event,
 		     std::map<std::string, std::string> attrs)
 {
-	if (this->ilevel > Level::FATAL) {
-		return;
-	}
+	LEVEL_CHECK(this->ilevel, Level::FATAL);
 	write_log(std::cerr, Level::FATAL, actor, event, attrs);
 	exit(EXIT_FAILURE);
 }
@@ -162,14 +141,13 @@ ConsoleLogger::fatal(const std::string& actor,
 
 void
 ConsoleLogger::fatal(const std::string& actor,
-    const std::string& event)
+		     const std::string& event)
 {
-	if (this->ilevel > Level::FATAL) {
-		return;
-	}
+	LEVEL_CHECK(this->ilevel, Level::FATAL);
 	write_log(std::cerr, Level::FATAL, actor, event, {});
 	exit(EXIT_FAILURE);
 }
+
 
 void
 ConsoleLogger::fatal(int exitcode,
@@ -177,9 +155,7 @@ ConsoleLogger::fatal(int exitcode,
 		     const std::string& event,
 		     std::map<std::string, std::string> attrs)
 {
-	if (this->ilevel > Level::FATAL) {
-		return;
-	}
+	LEVEL_CHECK(this->ilevel, Level::FATAL);
 	write_log(std::cerr, Level::FATAL, actor, event, attrs);
 	exit(exitcode);
 }
@@ -190,9 +166,7 @@ ConsoleLogger::fatal(int exitcode,
 		     const std::string& actor,
 		     const std::string& event)
 {
-	if (this->ilevel > Level::FATAL) {
-		return;
-	}
+	LEVEL_CHECK(this->ilevel, Level::FATAL);
 	write_log(std::cerr, Level::FATAL, actor, event, {});
 	exit(exitcode);
 }
@@ -203,19 +177,16 @@ ConsoleLogger::fatal_noexit(const std::string& actor,
 			    const std::string& event,
 			    std::map<std::string, std::string> attrs)
 {
-	if (this->ilevel > Level::FATAL) {
-		return;
-	}
+	LEVEL_CHECK(this->ilevel, Level::FATAL);
 	write_log(std::cerr, Level::FATAL, actor, event, attrs);
 }
+
 
 void
 ConsoleLogger::fatal_noexit(const std::string& actor,
 			    const std::string& event)
 {
-	if (this->ilevel > Level::FATAL) {
-		return;
-	}
+	LEVEL_CHECK(this->ilevel, Level::FATAL);
 	write_log(std::cerr, Level::FATAL, actor, event, {});
 }
 
@@ -235,9 +206,27 @@ ConsoleLogger::good()
 
 
 LogError
-ConsoleLogger::error(void)
+ConsoleLogger::error()
 {
 	return this->err;
+}
+
+
+int
+ConsoleLogger::close()
+{
+	if (-1 == ::close(STDOUT_FILENO)) {
+		this->err = LogError::ERR_CLOSEFAIL;
+		return -1;
+	}
+
+	if (-1 == ::close(STDERR_FILENO)) {
+		this->err = LogError::ERR_CLOSEFAIL;
+		return -1;
+	}
+
+	this->err = LogError::ERR_CLOSED;
+	return 0;
 }
 
 

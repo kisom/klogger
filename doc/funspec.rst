@@ -26,7 +26,8 @@ categories:
   would not compile under these flags, or would compile only with a
   specific compiler on a certain OS (ex., clang++ on Debian Linux).
 + No use of attributes. I've come to like loggers that use key-value
-  pairs for log data.
+  pairs for log data. These generally produce messages that are easier
+  to process with standard text tools (like ``awk(1)``).
   
 The libraries I've explored include `spdlog
 <https://github.com/gabime/spdlog>`_, glog (the Google logging
@@ -203,6 +204,9 @@ desired.
 
 A particular feature of this library is that it shouldn't depend on
 anything but the C++11 standard library and a POSIX header set.
+
+There's always going to be edge cases in text-based loggers; some
+semantic data will be lost.
 
 System Design
 -------------

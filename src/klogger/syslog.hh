@@ -21,30 +21,65 @@
  */
 
 
-#ifndef __KLOGGER_CONSOLE_HH__
-#define __KLOGGER_CONSOLE_HH__
+#ifndef __KLOGGER_SYSLOG_HH__
+#define __KLOGGER_SYSLOG_HH__
 
 
 #include <map>
+#include <syslog.h>
 
 #include <klogger/logger.hh>
 
 
 namespace klog {
+namespace syslog {
+	enum class Facility : int {
+		Auth = LOG_AUTH,
+		AuthPriv = LOG_AUTHPRIV,
+		Cron = LOG_CRON,
+		Daemon = LOG_DAEMON,
+		FTP = LOG_FTP,
+		Local0 = LOG_LOCAL0,
+		Local1 = LOG_LOCAL1,
+		Local2 = LOG_LOCAL2,
+		Local3 = LOG_LOCAL3,
+		Local4 = LOG_LOCAL4,
+		Local5 = LOG_LOCAL5,
+		Local6 = LOG_LOCAL6,
+		Local7 = LOG_LOCAL7,
+		LPR = LOG_LPR,
+		Mail = LOG_MAIL,
+		News = LOG_NEWS,
+		User = LOG_USER,
+	};
+
+	enum class Option : int {
+		Console = LOG_CONS,
+		NoDelay = LOG_NDELAY,
+		NoWait = LOG_NOWAIT,
+		PError = LOG_PERROR,
+		PID = LOG_PID,
+	};
+} // namespace syslog
 
 
-class ConsoleLogger : Logger {
+// Syslogger writes its logs to syslogd. Note that the nature of the
+// syslog(3) facilities means that any other use of those functions
+// outside of this logger in the program will be affected by this
+// program (e.g. if a call is made to openlog("some other name")).
+// The use of Syslogger with calls to syslog(3) is not recommended.
+class Syslogger : Logger {
 public:
-	ConsoleLogger(std::string name) :
-		iname(name), err(LogError::HEALTHY), ilevel(DEFAULT_LEVEL) {};
-	~ConsoleLogger(void) {};
+	Syslogger(std::string, syslog::Facility,
+		  std::initializer_list<syslog::Option>);
+	~Syslogger() {};
 
 	// debug writes a log message with the DEBUG level.
 	void debug(const std::string& actor,
-	    const std::string& event,
-	    std::map<std::string, std::string> attrs);
+		   const std::string& event,
+		   std::map<std::string, std::string> attrs);
 	void debug(const std::string& actor,
-	    const std::string& event);
+		   const std::string& event);
 
 	// info writes a log message with the INFO level.
 	void info(const std::string& actor,
@@ -55,51 +90,51 @@ public:
 
 	// warn writes a log message with the WARN level.
 	void warn(const std::string& actor,
-	    const std::string& event,
-	    std::map<std::string, std::string> attrs);
+		  const std::string& event,
+		  std::map<std::string, std::string> attrs);
 	void warn(const std::string& actor,
-	    const std::string& event);
+		  const std::string& event);
 
 	// error writes a log message with the ERROR level.
 	void error(const std::string& actor,
-	    const std::string& event,
-	    std::map<std::string, std::string> attrs);
+		   const std::string& event,
+		   std::map<std::string, std::string> attrs);
 	void error(const std::string& actor,
-	    const std::string& event);
+		   const std::string& event);
 
 	// critical writes a log message with the CRITICAL level.
 	void critical(const std::string& actor,
-	    const std::string& event,
-	    std::map<std::string, std::string> attrs);
+		      const std::string& event,
+		      std::map<std::string, std::string> attrs);
 	void critical(const std::string& actor,
-	    const std::string& event);
+		      const std::string& event);
 
 	// fatal writes a log message with the FATAL level. The process
 	// will exit with exit code EXIT_FAILURE.
 	void fatal(const std::string& actor,
-	    const std::string& event,
-	    std::map<std::string, std::string> attrs);
+		   const std::string& event,
+		   std::map<std::string, std::string> attrs);
 	void fatal(const std::string& actor,
-	    const std::string& event);
+		   const std::string& event);
 
 	// fatal writes a log message with the FATAL level. The process
 	// will exit with exitcode.
 	void fatal(int exitcode,
-	    const std::string& actor,
-	    const std::string& event,
-	    std::map<std::string, std::string> attrs);
+		   const std::string& actor,
+		   const std::string& event,
+		   std::map<std::string, std::string> attrs);
 	void fatal(int exitcode,
-	    const std::string& actor,
-	    const std::string& event);
+		   const std::string& actor,
+		   const std::string& event);
    
 	// fatal_noexit writes a log message with the FATAL level but
 	// does not exit; the caller is expected to handle exiting the
 	// process after any cleanup.
 	void fatal_noexit(const std::string& actor,
-	    const std::string& event,
-	    std::map<std::string, std::string> attrs);
+			  const std::string& event,
+			  std::map<std::string, std::string> attrs);
 	void fatal_noexit(const std::string& actor,
-	    const std::string& event);
+			  const std::string& event);
    
 	// level sets the minimum logging level.
 	void            level(Level);
@@ -114,16 +149,12 @@ public:
 	int		close(void);
 
 private:
-	std::string	iname;
+	std::string	ident;
 	LogError	err;
 	Level		ilevel;
 };
 
-
-
-
-
 } // namespace klog
 
 
-#endif // #ifndef __KLOGGER_CONSOLE_HH__
+#endif // #ifndef __KLOGGER_SYSLOG_HH__
