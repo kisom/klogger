@@ -10,6 +10,7 @@ configure
 depcomp
 install-sh
 missing
+.deps/
 src/.deps/
 src/Makefile
 src/Makefile.in
@@ -21,6 +22,9 @@ test-suite.log
 # noinst / test programs
 src/console_test
 src/syslog_test
+src/filelog_test
+*.log
+*.err
 
 # compiled output
 src/libklogger.a

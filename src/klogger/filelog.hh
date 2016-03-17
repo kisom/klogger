@@ -21,76 +21,35 @@
  */
 
 
-#ifndef __KLOGGER_SYSLOG_HH__
-#define __KLOGGER_SYSLOG_HH__
+#ifndef __KLOGGER_FILELOG_HH__
+#define __KLOGGER_FILELOG_HH__
 
 
+#include <fstream>
 #include <map>
-#include <syslog.h>
 
 #include <klogger/logger.hh>
 
 
 namespace klog {
-namespace syslog {
-	enum class Facility : int {
-		Auth = LOG_AUTH,
-		AuthPriv = LOG_AUTHPRIV,
-		Cron = LOG_CRON,
-		Daemon = LOG_DAEMON,
-		FTP = LOG_FTP,
-		Local0 = LOG_LOCAL0,
-		Local1 = LOG_LOCAL1,
-		Local2 = LOG_LOCAL2,
-		Local3 = LOG_LOCAL3,
-		Local4 = LOG_LOCAL4,
-		Local5 = LOG_LOCAL5,
-		Local6 = LOG_LOCAL6,
-		Local7 = LOG_LOCAL7,
-		LPR = LOG_LPR,
-		Mail = LOG_MAIL,
-		News = LOG_NEWS,
-		User = LOG_USER,
-	};
 
-	enum class Option : int {
-		// Log to the console if syslog can't be opened.
-		Console = LOG_CONS,
-
-		// Open the connection to syslog immediately; the
-		// default is to open the log on the first log
-		// message.
-		NoDelay = LOG_NDELAY,
-
-		// Don't wait for child processes that may be
-		// created while logging; on most platforms,
-		// this has no effect.
-		NoWait = LOG_NOWAIT,
-
-		// Also write log messages to standard error.
-		PError = LOG_PERROR,
-
-		// Log the process ID with each message.
-		PID = LOG_PID,
-	};
-} // namespace syslog
-
-
-// Syslogger writes its logs to syslogd. Note that the nature of the
-// syslog(3) facilities means that any other use of those functions
-// outside of this logger in the program will be affected by this
-// program (e.g. if a call is made to openlog("some other name")).
-// The use of Syslogger with calls to syslog(3) is not recommended.
-class Syslogger : Logger {
+// FileLogger writes logs to disk.
+class FileLogger : Logger {
 public:
-	// The construct takes an identity string that is used to
-	// identify the logs in syslog. Facility is one of the
-	// standard facilities provided in syslog::Facility. The
-	// options are a list of syslog::Option values that
-	// correspond to syslog logging options.
-	Syslogger(std::string, syslog::Facility,
-		  std::initializer_list<syslog::Option>);
-	~Syslogger() {};
+	// Create a new file logger where all messages are written
+	// to logfile. If truncate is true, the logfile will be
+	// truncated at initialisation. If the log file does not
+	// exist, it will be created.
+	FileLogger(std::string logfile, bool truncate);
+
+	// Create a new file logger where debug and info messages
+	// are written to logfile, and all other messages are written
+	// to errfile. If truncate is true, the logfiles will be
+	// truncated at initialisation. If the files do not exist,
+	// they will be created.
+	FileLogger(std::string logfile, std::string errfile, bool truncate);
+
+	~FileLogger() {};
 
 	// debug writes a log message with the DEBUG level.
 	void debug(const std::string& actor,
@@ -167,12 +126,19 @@ public:
 	int		close(void);
 
 private:
-	std::string	ident;
-	LogError	err;
+	std::ofstream	outs;
+	std::ofstream	errs;
 	Level		ilevel;
+	LogError	err;
 };
+
+
+FileLogger	*open_logfile(std::string logfile, bool truncate);
+FileLogger	*open_logfile(std::string logfile, std::string errfile,
+			      bool truncate);
+
 
 } // namespace klog
 
 
-#endif // #ifndef __KLOGGER_SYSLOG_HH__
+#endif // #ifndef __KLOGGER_FILELOG_HH__
