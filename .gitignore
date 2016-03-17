@@ -37,3 +37,7 @@ src/*.plist
 # coverity scanner
 src/cov-int
 src/klog.tgz
+
+# tlv crap
+src/libtlv.a
+src/tlv_test

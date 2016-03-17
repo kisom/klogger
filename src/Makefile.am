@@ -2,7 +2,7 @@
 # klogger/filelog.hh filelog.cc		# logging to a file
 AM_CPPFLAGS  =	-Wall -Wextra -pedantic -Wshadow -Wpointer-arith -Wcast-align
 AM_CPPFLAGS +=	-Wwrite-strings -Wmissing-declarations -Wno-long-long -Werror
-AM_CPPFLAGS +=	-Wunused-variable -std=c++11 -D_XOPEN_SOURCE -Os -I.
+AM_CPPFLAGS +=	-Wunused-variable -std=c++11 -D_XOPEN_SOURCE -O0 -g -I.
 AM_CPPFLAGS +=	-fno-elide-constructors	 -Weffc++
 
 ## Source file sets.
@@ -18,20 +18,26 @@ SYSLOG_CC =	klogger/syslog.hh  syslog.cc
 # FileLogger implementation.
 FILELOG_CC =	klogger/filelog.hh filelog.cc
 
+# TLV serialisation implementation.
+TLV_CC =	tlv.hh tlv.cc
+
 # Superset of the source file sets. 
 LOGGER_CC =	$(LOGGER_CORE) $(CONSOLE_CC) $(SYSLOG_CC) $(FILELOG_CC)
-		
 
-lib_LIBRARIES =			libklogger.a
+lib_LIBRARIES =			libklogger.a libtlv.a
 nobase_include_HEADERS =	klogger/logger.hh klogger/console.hh
 noinst_HEADERS =		internal.hh
 
 libklogger_a_SOURCES =		$(LOGGER_CC)
+libtlv_a_SOURCES =		$(TLV_CC)
 
 noinst_PROGRAMS =		console_test syslog_test filelog_test
 console_test_SOURCES =		$(LOGGER_CC) console_test.cc
 syslog_test_SOURCES =		$(LOGGER_CC) syslog_test.cc
 filelog_test_SOURCES =		$(LOGGER_CC) filelog_test.cc
+
+check_PROGRAMS =		tlv_test
+tlv_test_SOURCES =		$(LOGGER_CC) $(TLV_CC) tlv_test.cc
 
 
 .PHONY: scanners clang-scanner cppcheck-scanner
