@@ -26,6 +26,7 @@
 #include <iostream>
 #include <sstream>
 #include <string>
+#include <time.h>
 
 #include <klogger/logger.hh>
 #include <internal.hh>

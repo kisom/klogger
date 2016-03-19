@@ -21,39 +21,66 @@
  */
 
 
-#ifndef __KLOGGER_TLV_HH
-#define __KLOGGER_TLV_HH
-
-
-#include <cstdint>
-#include <ostream>
+#include <cstdlib>
+#include <iostream>
+#include <map>
 #include <string>
+#include <getopt.h>
+
+#include <klogger/binlog.hh>
 
 
-namespace klog {
-namespace tlv {
+int
+main(int argc, char *argv[])
+{
+	char			**pargv;
+	int			  pargc;
+	klog::BinLogger		 *flog = nullptr;
+	std::string		  name = std::string(argv[0]);
+	int			  nargs;
+	int			  opt;
 
+	while (-1 != (opt = ::getopt(argc, argv, "r"))) {
+		switch (opt) {
+		case 'r':
+			std::cerr << "Not implemented.\n";
+			exit(1);
+		default:
+			::abort();
+		}
+	}
 
-// The following constants denote tags.
-constexpr std::uint8_t	TLogEntry =	0x01;
-constexpr std::uint8_t	TTimestamp =	0x02;
-constexpr std::uint8_t	TLevel =	0x04;
-constexpr std::uint8_t	TString =	0x08;
+	pargc = argc - optind;
+	pargv = argv + optind;
 
-// Utility functions.
-std::string	hex_encode(const std::string&);
-std::string	hex_encode(const char *, size_t);
+	if (pargc > 1) {
+		flog = klog::open_binlogfile(std::string(pargv[0]),
+		    std::string(pargv[1]), true);
+		nargs = 3;
+	}
+	else if (pargc > 0) {
+		flog = klog::open_binlogfile(std::string(pargv[0]), true);
+		nargs = 2;
+	}
+	else {
+		std::cerr << "Usage: " << argv[0] << " logfile [errfile]\n";
+		exit(EXIT_FAILURE);
+	}
 
-// TLV serialisation support.
-bool	write_length(std::ostream &outs, size_t length);
-bool	write_timestamp(std::ostream &outs, uint64_t t);
-bool	write_loglevel(std::ostream &outs, uint8_t lvl);
-bool	write_string(std::ostream &outs, std::string s);
-bool	write_header(std::ostream& outs, std::uint8_t tag, std::uint64_t length);
+	std::map<std::string, std::string>	args;
 
+	if (!flog->good()) {
+		::abort();
+	}
 
-} // namespace tlv
-} // namespace klog
+	flog->debug("main", "starts");
 
+	for (int i = nargs; i < argc; i++) {
+		auto	k = "argv[" + std::to_string(i) + "]";
+		args[k] = std::string(argv[i]);
+	}
 
-#endif // #ifndef __KLOGGER_TLV_HH
+	flog->info("main", "starts", args);
+	flog->warn("main", "depleted");
+	flog->fatal("main", "ends");
+}

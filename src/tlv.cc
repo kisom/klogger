@@ -23,10 +23,14 @@
 
 #include <cstdint>
 #include <cstring>
+#include <iostream>
+#include <map>
 #include <ostream>
+#include <sstream>
 #include <string>
+#include <time.h>
 
-#include <tlv.hh>
+#include <klogger/tlv.hh>
 
 
 namespace klog {
@@ -76,6 +80,29 @@ write_tag(std::ostream& outs, std::uint8_t t)
 }
 
 
+static inline size_t
+length_octets(size_t length)
+{
+	std::uint8_t	loct = 1;
+
+	if (length <= 0x7F) {
+		return loct;
+	}
+
+	for (size_t i = (sizeof(length) * 8) - 1; i >= 1; i--) {
+		size_t	bits = 1;
+		bits <<= i;
+		if (0 == (length & bits)) {
+			continue;
+		}
+		loct = (i + 8) >> 3;
+		break;
+	}
+
+	return loct;
+}
+
+
 bool
 write_length(std::ostream &outs, size_t length)
 {
@@ -94,7 +121,7 @@ write_length(std::ostream &outs, size_t length)
 			loct = (i + 8) >> 3;
 			break;
 		}
-		
+
 		loct = 0x80 + loct;
 		outs.write(reinterpret_cast<const char *>(&loct), 1);
 		if (!outs.good()) {
@@ -202,6 +229,81 @@ write_header(std::ostream& outs, std::uint8_t tag, std::uint64_t length)
 	}
 
 	return write_length(outs, length);
+}
+
+
+static inline size_t
+string_record_length(std::string s)
+{
+	size_t	slen = s.size();
+	size_t	length;
+
+	length = sizeof(TString);
+	length += length_octets(slen);
+	length += slen;
+	return length;
+}
+
+
+static inline size_t
+log_length(std::string actor, std::string event,
+	   std::map<std::string, std::string> attrs)
+{
+	// Timestamp record is 1 byte tag + 1 byte length + 8 byte
+	// value (10 bytes total); level record is 1 byte tag +
+	// 1 byte length + 1 byte value (3 bytes).
+	size_t	length = 13;
+
+	length += string_record_length(actor);
+	length += string_record_length(event);
+
+	for (auto it = attrs.begin(); it != attrs.end(); it++) {
+		length += string_record_length(it->first);
+		length += string_record_length(it->second);
+	}
+
+	return length;
+}
+
+
+bool
+write_tlv_log(std::ostream& outs, std::uint8_t lvl,
+	      std::string actor, std::string event,
+	      std::map<std::string, std::string> attrs)
+{
+	std::time_t		t = std::time(nullptr);
+	size_t			l = log_length(actor, event, attrs);
+
+	std::cerr << "record length: " << l << std::endl;
+	std::cerr << "writing header\n";
+	if (!write_header(outs, TLogEntry, static_cast<std::uint64_t>(l))) {
+		return false;
+	}
+
+	std::cerr << "writing timestamp\n";
+	if (!write_timestamp(outs, std::uint64_t(t))) {
+		return false;
+	}
+	else if (!write_loglevel(outs, lvl)) {
+		return false;
+	}
+	else if (!write_string(outs, actor)) {
+		return false;
+	}
+	else if (!write_string(outs, event)) {
+		return false;
+	}
+
+	for (auto it = attrs.begin(); it != attrs.end(); it++) {
+		if (!write_string(outs, it->first)) {
+			return false;
+		}
+		else if (!write_string(outs, it->second)) {
+			return false;
+		}
+	}
+
+	return outs.good();
 }
 
 

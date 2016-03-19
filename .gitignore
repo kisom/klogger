@@ -23,6 +23,7 @@ test-suite.log
 src/console_test
 src/syslog_test
 src/filelog_test
+src/binlog_test
 *.log
 *.err
 

@@ -21,21 +21,27 @@ FILELOG_CC =	klogger/filelog.hh filelog.cc
 # TLV serialisation implementation.
 TLV_CC =	tlv.hh tlv.cc
 
-# Superset of the source file sets. 
-LOGGER_CC =	$(LOGGER_CORE) $(CONSOLE_CC) $(SYSLOG_CC) $(FILELOG_CC)
+# BinLogger implementation.
+BINLOG_CC =	$(TLV_CC) klogger/binlog.hh binlog.cc
 
-lib_LIBRARIES =			libklogger.a libtlv.a
+# Superset of the source file sets. 
+LOGGER_CC =	$(LOGGER_CORE)		\
+		$(CONSOLE_CC)		\
+		$(SYSLOG_CC)		\
+		$(FILELOG_CC)		\
+		$(BINLOG_CC)
+
+lib_LIBRARIES =			libklogger.a
 nobase_include_HEADERS =	klogger/logger.hh klogger/console.hh
 noinst_HEADERS =		internal.hh
 
 libklogger_a_SOURCES =		$(LOGGER_CC)
-libtlv_a_SOURCES =		$(TLV_CC)
 
-noinst_PROGRAMS =		console_test syslog_test filelog_test
+noinst_PROGRAMS =		console_test syslog_test filelog_test binlog_test
 console_test_SOURCES =		$(LOGGER_CC) console_test.cc
 syslog_test_SOURCES =		$(LOGGER_CC) syslog_test.cc
 filelog_test_SOURCES =		$(LOGGER_CC) filelog_test.cc
-
+binlog_test_SOURCES =		$(LOGGER_CC) binlog_test.cc
 check_PROGRAMS =		tlv_test
 tlv_test_SOURCES =		$(LOGGER_CC) $(TLV_CC) tlv_test.cc
 

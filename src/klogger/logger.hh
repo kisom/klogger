@@ -78,7 +78,7 @@ enum class Level : int {
 
 constexpr Level	DEFAULT_LEVEL = Level::INFO;
 
-   
+
 // A LogError describes an error condition for a logger. This error
 // indicates the reason that the logger cannot write log messages.
 enum class LogError {
@@ -91,13 +91,14 @@ enum class LogError {
 	// The logger couldn't be opened: maybe the TTY is unavailable for
 	// writing, or a log file couldn't be opened.
 	ERR_OPEN,
-   
+
 	// The logger failed due to insufficient system permissions.
 	ERR_NOPERM,
-   
-	// The logger couldn't write to disk due to running out of disk space.
+
+	// The logger couldn't write to disk due to running out of disk space
+	// or an IO error occurred.
 	ERR_DISK,
-   
+
 	// The logger couldn't write a message because the resource is
 	// unavailable. There might be a network failure, or a file stream
 	// might have been closed.
@@ -105,7 +106,7 @@ enum class LogError {
 
 	// The logger couldn't close itself.
 	ERR_CLOSEFAIL,
-   
+
 	// If the error doesn't meet one of the above categories, let the user
 	// know that we didn't think about this condition.  Normally, I'd
 	// ``abort()`` here, but that should left to the user's discretion.
@@ -185,7 +186,7 @@ public:
 	void fatal(int exitcode,
 		   const std::string& actor,
 		   const std::string& event) = 0;
-   
+
 	// fatal_noexit writes a log message with the FATAL level but
 	// does not exit; the caller is expected to handle exiting the
 	// process after any cleanup.
@@ -196,7 +197,7 @@ public:
 	virtual
 	void fatal_noexit(const std::string& actor,
 			  const std::string& event) = 0;
-   
+
 	// level sets the minimum logging level.
 	virtual
 	void            level(Level) = 0;
@@ -208,7 +209,7 @@ public:
 	// error returns the current error condition for a logger.
 	virtual
 	LogError        error(void) = 0;
-	  
+
 	// close provides a mechanism for shutting down a logger. Generally,
 	// a closed logger should return ERR_CLOSED once it is closed.
 	virtual
