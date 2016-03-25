@@ -23,6 +23,7 @@
 
 #include <fstream>
 #include <map>
+#include <unistd.h>
 
 #include <klogger/logger.hh>
 #include <klogger/filelog.hh>

@@ -23,12 +23,11 @@
 
 #include <cstdint>
 #include <cstring>
-#include <iostream>
+#include <ctime>
 #include <map>
 #include <ostream>
 #include <sstream>
 #include <string>
-#include <time.h>
 
 #include <klogger/tlv.hh>
 
@@ -274,13 +273,10 @@ write_tlv_log(std::ostream& outs, std::uint8_t lvl,
 	std::time_t		t = std::time(nullptr);
 	size_t			l = log_length(actor, event, attrs);
 
-	std::cerr << "record length: " << l << std::endl;
-	std::cerr << "writing header\n";
 	if (!write_header(outs, TLogEntry, static_cast<std::uint64_t>(l))) {
 		return false;
 	}
 
-	std::cerr << "writing timestamp\n";
 	if (!write_timestamp(outs, std::uint64_t(t))) {
 		return false;
 	}

@@ -26,6 +26,7 @@
 #include <iostream>
 #include <sstream>
 #include <map>
+#include <unistd.h>
 
 #include <klogger/logger.hh>
 #include <klogger/binlog.hh>
