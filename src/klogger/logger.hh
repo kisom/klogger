@@ -38,13 +38,13 @@ enum class Level : int {
 	// DEBUG is a debug-level log message. These are only used during
 	// development or if a deployed system repeatedly sees abnormal
 	// errors.
-	DEBUG,
+	DEBUG = 1<<0,
 
 	// INFO is an informational log message. This is a normal
 	// log message that is used to deliver information, such as
 	// recording requests. Ops teams are never paged for informational
 	// messages. This is the default log level.
-	INFO,
+	INFO = 1<<1,
 
 	// WARN is a warning message. An example of this is a bad request
 	// sent to a server. This isn't an error on the part of the program,
@@ -53,27 +53,27 @@ enum class Level : int {
 	// if a certain threshold of warnings is reached (which is typically
 	// much higher than errors). For example, repeated warnings might
 	// be a sign that the system is under attack.
-	WARN,
+	WARN = 1<<2,
 
 	// ERROR is an error message.  A single error doesn't require an
 	// ops team to be paged, but repeated errors should often trigger
 	// a page based on threshold triggers. An example is a network
 	// failure: it might be a transient failure (these do happen),
 	// but most of the time it's self-correcting.
-	ERROR,
+	ERROR = 1<<3,
 
 	// CRITICAL is a message for critical conditions. The error,
 	// if uncorrected, is likely to cause a fatal condition shortly.
 	// An example is running out of disk space. This is something that
 	// the ops team should get paged for.
-	CRITICAL,
+	CRITICAL = 1<<4,
 
 	// FATAL indicates the system is unusable, the equivalent of
 	// syslog's ``emerg`` level ([EMERG]); this has the additional
 	// effect of exiting. An example is a self-check assertion failure,
 	// indicating that the system is in an inconsistent state. The ops
 	// team would be paged for this condition.
-	FATAL,
+	FATAL = 1<<5,
 };
 
 constexpr Level	DEFAULT_LEVEL = Level::INFO;

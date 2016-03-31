@@ -1,7 +1,7 @@
 klogger
 =======
 
-This is a lightweight MIT-licensed attribute-based logging static package
+This is a lightweight MIT-licensed attribute-based logging static library
 written in C++11.
 
 The motivations and basic design are covered in the functional spec
@@ -29,30 +29,6 @@ Overview
 Log messages consist of four components:
 
 1. The **level** attaches a notion of priority to the log message.
-   Several log levels are available:
-
-   + CRITICAL: critical conditions. The error, if
-     uncorrected, is likely to cause a fatal condition shortly.  An
-     example is running out of disk space. This is something that
-     the ops team should get paged for.
-   + ERROR: error conditions. A single error doesn't require an
-     ops team to be paged, but repeated errors should often trigger a
-     page based on threshold triggers. An example is a network failure:
-     it might be a transient failure (these do happen), but most of the
-     time it's self-correcting.
-   + WARNING: warning conditions. An example of this is a bad
-     request sent to a server. This isn't an error on the part of the
-     program, but it may be indicative of other things. Like errors, the
-     ops team shouldn't be paged for errors, but a page might be
-     triggered if a certain threshold of warnings is reached (which is
-     typically much higher than errors). For example, repeated warnings
-     might be a sign that the system is under attack.
-   + INFO: informational message. This is a normal log message
-     that is used to deliver information, such as recording requests. Ops
-     teams are never paged for informational messages. This is the
-     default log level.
-   + DEBUG: debug-level message. These are only used during
-     development or if a deployed system repeatedly sees abnormal errors.
 
 2. The **actor** is used to specify which component is generating
    the log message. This could be the program name, or it could be
@@ -81,7 +57,7 @@ will cover the header:
 + ``$3`` contains the actor
 + ``$4`` contains the event
 
-The library revolves around the ``Logger`` virtual class. This are
+The library revolves around the ``Logger`` virtual class. There are
 several implementations:
 
 * ``ConsoleLogger``: writes DEBUG and INFO messages to standard output,
@@ -97,6 +73,42 @@ several implementations:
    logs are written in a binary format.
 
 The user's manual is in ``doc/manual.rst``.
+
+
+Example
+-------
+
+This is the ``src/console_test.cc`` program::
+
+  #include <cstdlib>
+  #include <map>
+  #include <string>
+   
+  #include <klogger/console.hh>
+   
+   
+  int
+  main(int argc, char *argv[])
+  {
+          std::string                             name = std::string(argv[0]);
+          klog::ConsoleLogger                     console(name);
+          std::map<std::string, std::string>      args;
+   
+          if (!console.good()) {
+                  ::abort();
+          }
+   
+          console.debug("main", "starts");
+   
+          for (int i = 1; i < argc; i++) {
+                  auto        k = "argv[" + std::to_string(i) + "]";
+                  args[k] = std::string(argv[i]);
+          }
+   
+          console.info("main", "starts", args);
+          console.warn("main", "depleted", {{"args", std::to_string(argc)}});
+          console.fatal("main", "ends");
+  }
 
 
 License
