@@ -19,7 +19,8 @@ Log messages consist of four components:
    Several log levels are available:
 
    + FATAL (32): the system is in an unsuable state, and cannot
-     continue to run. Most of the logging for this 
+     continue to run. It's expected that shortly after logging a
+     fatal message, the program will halt.
    + CRITICAL (16): critical conditions. The error, if uncorrected, is
      likely to cause a fatal condition shortly.  An example is running
      out of disk space. This is something that the ops team should get
