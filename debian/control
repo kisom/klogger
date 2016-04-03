@@ -1,0 +1,24 @@
+Source: libklogger
+Priority: optional
+Maintainer: Kyle Isom <coder@kyleisom.net>
+Build-Depends: debhelper (>= 9), autotools-dev
+Standards-Version: 3.9.5
+Section: libs
+Homepage: https://git.kyleisom.net/lib/libklogger
+Vcs-Git: https://git.kyleisom.net/lib/libklogger
+Vcs-Browser: https://git.kyleisom.net/lib/libklogger
+
+Package: libklogger-dev
+Section: libdevel
+Architecture: any
+Depends: libklogger (= ${binary:Version}), ${misc:Depends}
+Description: an attribute-based logging library
+ libklogger is an MIT-licensed C++11 static library for
+ attribute-based logging.
+
+Package: libklogger
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: an attribute-based logging library
+ libklogger is an MIT-licensed C++11 static library for
+ attribute-based logging.
