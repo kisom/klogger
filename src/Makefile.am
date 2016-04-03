@@ -19,7 +19,7 @@ SYSLOG_CC =	klogger/syslog.hh  syslog.cc
 FILELOG_CC =	klogger/filelog.hh filelog.cc
 
 # TLV serialisation implementation.
-TLV_CC =	tlv.hh tlv.cc
+TLV_CC =	klogger/tlv.hh tlv.cc
 
 # BinLogger implementation.
 BINLOG_CC =	$(TLV_CC) klogger/binlog.hh binlog.cc
