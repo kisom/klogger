@@ -1,8 +1,8 @@
 AC_PREREQ([2.68])
-AC_INIT([klogger],
+AC_INIT([libklogger],
 	[1.0.0],
 	[coder@kyleisom.net],
-	[klogger],
+	[libklogger],
 	[https://git.kyleisom.net/lib/libklogger])
 AM_INIT_AUTOMAKE([1.11 foreign])
 
