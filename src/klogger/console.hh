@@ -35,8 +35,8 @@ namespace klog {
 
 class ConsoleLogger : Logger {
 public:
-	ConsoleLogger(std::string name) :
-		iname(name), err(LogError::HEALTHY), ilevel(DEFAULT_LEVEL) {};
+	ConsoleLogger(void) :
+		err(LogError::HEALTHY), ilevel(DEFAULT_LEVEL) {};
 	~ConsoleLogger(void) {};
 
 	// debug writes a log message with the DEBUG level.
@@ -114,7 +114,6 @@ public:
 	int		close(void);
 
 private:
-	std::string	iname;
 	LogError	err;
 	Level		ilevel;
 };
