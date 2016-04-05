@@ -1,6 +1,6 @@
 AC_PREREQ([2.68])
 AC_INIT([libklogger],
-	[1.0.0],
+	[1.0.1],
 	[coder@kyleisom.net],
 	[libklogger],
 	[https://git.kyleisom.net/lib/libklogger])
