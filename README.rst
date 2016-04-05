@@ -1,6 +1,9 @@
 klogger
 =======
 
+.. image:: https://scan.coverity.com/projects/8282/badge.svg
+   :target: https://scan.coverity.com/projects/kisom-klogger
+
 This is a lightweight MIT-licensed attribute-based logging static library
 written in C++11.
 
