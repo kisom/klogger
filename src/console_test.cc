@@ -31,8 +31,7 @@
 int
 main(int argc, char *argv[])
 {
-	std::string		name = std::string(argv[0]);
-	klog::ConsoleLogger	console(name);
+	klog::ConsoleLogger	console;
 	std::map<std::string, std::string>	args;
 
 	if (!console.good()) {

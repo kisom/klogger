@@ -35,7 +35,7 @@
 using namespace std;
 
 
-auto console	= klog::ConsoleLogger("tlv_test");
+klog::ConsoleLogger	console;
 
 struct he_test {
 	bool		 s;	// If true, use the string field.
