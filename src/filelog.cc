@@ -38,7 +38,8 @@ constexpr auto	TRUNC_FLAGS = std::ofstream::out | std::ofstream::trunc;
 
 
 FileLogger::FileLogger(std::string logfile, bool truncate)
-    : ilevel(DEFAULT_LEVEL), err(LogError::HEALTHY)
+    : outs(nullptr), errs(nullptr), ilevel(DEFAULT_LEVEL),
+      err(LogError::HEALTHY)
 {
 	auto	flags = DEFAULT_FLAGS;
 
@@ -68,7 +69,8 @@ FileLogger::FileLogger(std::string logfile, bool truncate)
 
 FileLogger::FileLogger(std::string logfile, std::string errfile,
 		       bool truncate)
-    : ilevel(DEFAULT_LEVEL), err(LogError::HEALTHY)
+    : outs(nullptr), errs(nullptr), ilevel(DEFAULT_LEVEL),
+      err(LogError::HEALTHY)
 {
 	auto	flags = DEFAULT_FLAGS;
 

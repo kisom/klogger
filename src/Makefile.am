@@ -43,7 +43,7 @@ syslog_test_SOURCES =		$(LOGGER_CC) syslog_test.cc
 filelog_test_SOURCES =		$(LOGGER_CC) filelog_test.cc
 binlog_test_SOURCES =		$(LOGGER_CC) binlog_test.cc
 check_PROGRAMS =		tlv_test
-tlv_test_SOURCES =		$(LOGGER_CC) $(TLV_CC) tlv_test.cc
+tlv_test_SOURCES =		$(LOGGER_CC) tlv_test.cc
 
 
 .PHONY: scanners clang-scanner cppcheck-scanner

@@ -56,7 +56,8 @@ write_tlv_log(std::ostream& outs,
 }
 
 BinLogger::BinLogger(std::string logfile, bool truncate)
-    : ilevel(DEFAULT_LEVEL), err(LogError::HEALTHY)
+    : outs(nullptr), errs(nullptr), ilevel(DEFAULT_LEVEL),
+      err(LogError::HEALTHY)
 {
 	auto	flags = BIN_DEFAULT_FLAGS;
 
@@ -86,7 +87,8 @@ BinLogger::BinLogger(std::string logfile, bool truncate)
 
 BinLogger::BinLogger(std::string logfile, std::string errfile,
 		       bool truncate)
-    : ilevel(DEFAULT_LEVEL), err(LogError::HEALTHY)
+    : outs(nullptr), errs(nullptr), ilevel(DEFAULT_LEVEL),
+      err(LogError::HEALTHY)
 {
 	auto	flags = BIN_DEFAULT_FLAGS;
 

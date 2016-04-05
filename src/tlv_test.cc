@@ -22,6 +22,8 @@
 
 
 #include <cstdio>
+#include <cstring>
+#include <functional>
 #include <iostream>
 #include <map>
 #include <sstream>
@@ -46,7 +48,7 @@ struct he_test {
 static struct he_test
 build_he_test(string e, string v)
 {
-	struct he_test	t;
+	struct he_test	t = { false, "", "", nullptr, 0 };
 
 	t.s = true;
 	t.e = e;
@@ -57,10 +59,10 @@ build_he_test(string e, string v)
 static struct he_test
 build_he_test_chars(string e, const char *s, size_t length)
 {
-	struct he_test	t;
+	struct he_test	t = { false, "", "", nullptr, 0 };
 
 	if (0 == length) {
-		length = strnlen(s, 64);
+		length = ::strnlen(s, 64);
 	}
 
 	t.s = false;
@@ -104,7 +106,7 @@ vector<struct he_test> he_tests = {
 };
 
 
-int
+static int
 test_hex_encode(void)
 {
 	int	fails = 0;
@@ -145,7 +147,7 @@ compare_strings(const char *expect, string value)
 }
 
 
-int
+static int
 test_write_length(void)
 {
 	int	fails = 0;
@@ -177,7 +179,7 @@ test_write_length(void)
 }
 
 
-int
+static int
 test_write_timestamp(void)
 {
 	uint64_t	t = 1458304571;
@@ -204,7 +206,7 @@ test_write_timestamp(void)
 }
 
 
-int
+static int
 test_write_loglevel(void)
 {
 	uint8_t		lvl = 0x1;	// INFO
@@ -268,7 +270,7 @@ run_string_test(const struct string_test& t)
 }
 
 
-int
+static int
 test_write_string(void)
 {
 	int	fails = 0;
@@ -281,7 +283,7 @@ test_write_string(void)
 	return fails == 0;
 }
 
-static map<string, function<int(void)>> tests = {
+static map<string, std::function<int(void)>> tests = {
 	{"hex_encode", test_hex_encode},
 	{"write_length", test_write_length},
 	{"write_timestamp", test_write_timestamp},
